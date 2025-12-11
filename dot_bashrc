@@ -1,0 +1,10 @@
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+PS1='[\u@\h \W]\$ '
+
+XDG_SHELL="$HOME/.config/shell"
+
+[ -f "$XDG_SHELL/env" ] && source "$XDG_SHELL/env"
+[ -f "$XDG_SHELL/aliases" ] && source "$XDG_SHELL/aliases"
+[ -f "$XDG_SHELL/functions" ] && source "$XDG_SHELL/functions"

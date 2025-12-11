@@ -1,0 +1,85 @@
+# --- Path setup ---
+export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+
+
+# --- Antidote (plugin manager) ---
+# Load antidote
+if [ -f "$HOME/.antidote/antidote.zsh" ]; then
+  source "$HOME/.antidote/antidote.zsh"
+  antidote load < $HOME/.zsh_plugins.txt
+elif [ -f "/usr/share/zsh-antidote/antidote.zsh" ]; then
+  source "/usr/share/zsh-antidote/antidote.zsh"
+  antidote load < $HOME/.zsh_plugins.txt
+elif [ -f "/opt/homebrew/opt/antidote/share/antidote/antidote.zsh" ]; then
+  source "/opt/homebrew/opt/antidote/share/antidote/antidote.zsh"
+  antidote load < $HOME/.zsh_plugins.txt
+else
+  echo "Antidote not found! Please install it."
+fi
+
+# --- Starship prompt ---
+eval "$(starship init zsh)"
+
+
+# --- Zsh options ---
+setopt autocd # Change directories by typing their name
+setopt correct # Suggest corrections for mistyped commands
+setopt extendedglob # Enable advanced globbing features
+setopt histignoredups # Avoid duplicate entries in history
+setopt sharehistory # Share history across sessions
+setopt incappendhistory # Append to history file incrementally
+setopt interactivecomments # Allow comments in interactive commands
+setopt notify # Notify immediately when background jobs complete
+
+# --- History settings ---
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=50000
+SAVEHIST=50000
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+
+# --- More keybindings ---
+bindkey '^[[H' beginning-of-line
+bindkey '^[[F' end-of-line
+bindkey '^[[3~' delete-char
+
+# --- Shared config sourcing ---
+XDG_SHELL="$HOME/.config/shell"
+[ -f "$XDG_SHELL/env" ] && source "$XDG_SHELL/env"
+[ -f "$XDG_SHELL/aliases" ] && source "$XDG_SHELL/aliases"
+[ -f "$XDG_SHELL/functions" ] && source "$XDG_SHELL/functions"
+
+
+# --- Environment improvements ---
+export EDITOR="nvim"
+export VISUAL="nvim"
+
+
+# Enable completion
+autoload -Uz compinit && compinit
+
+
+# Enhanced grep
+alias grep='grep --color=auto'
+
+
+# --- Vi mode indicator ---
+export VI_MODE_SET_CURSOR=true
+
+
+# --- Custom functions ---
+mkcd() {
+mkdir -p "$1" && cd "$1"
+}
+
+
+# Project root finder (example)
+projroot() {
+local root
+root=$(git rev-parse --show-toplevel 2>/dev/null)
+[ -n "$root" ] && cd "$root"
+}
+
+
+# Reload shell config
+alias reload='source ~/.zshrc'

@@ -1,0 +1,4 @@
+
+XDG_SHELL="$HOME/.config/shell"
+
+[ -f "$XDG_SHELL/env" ] && source "$XDG_SHELL/env"
