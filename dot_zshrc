@@ -58,6 +58,9 @@ export VISUAL="nvim"
 # Enable completion
 autoload -Uz compinit && compinit
 
+if command -v bw; then
+  eval "$(bw completion --shell zsh); compdef _bw bw;"
+fi
 
 # Enhanced grep
 alias grep='grep --color=auto'
