@@ -58,9 +58,6 @@ export VISUAL="nvim"
 # Enable completion
 autoload -Uz compinit && compinit
 
-if command -v bw; then
-  eval "$(bw completion --shell zsh); compdef _bw bw;"
-fi
 
 # Enhanced grep
 alias grep='grep --color=auto'
@@ -86,3 +83,7 @@ root=$(git rev-parse --show-toplevel 2>/dev/null)
 
 # Reload shell config
 alias reload='source ~/.zshrc'
+
+if command -v fastfetch > /dev/null; then
+  fastfetch
+fi
