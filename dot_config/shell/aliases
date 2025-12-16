@@ -31,3 +31,14 @@ alias ...='cd ../..'
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
+
+
+# Enhanced grep
+alias grep='grep --color=auto'
+
+# Reload shell config
+if [ -n "$ZSH_VERSION" ]; then
+  alias reload='source ~/.zshrc'
+elif [ -n "$BASH_VERSION" ]; then
+  alias reload='source ~/.bashrc'
+fi

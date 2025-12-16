@@ -1,5 +1,8 @@
-# --- Path setup ---
-export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+# --- Shared config sourcing ---
+XDG_SHELL="$HOME/.config/shell"
+[ -f "$XDG_SHELL/env" ] && source "$XDG_SHELL/env"
+[ -f "$XDG_SHELL/aliases" ] && source "$XDG_SHELL/aliases"
+[ -f "$XDG_SHELL/functions" ] && source "$XDG_SHELL/functions"
 
 
 # --- Antidote (plugin manager) ---
@@ -18,8 +21,9 @@ else
 fi
 
 # --- Starship prompt ---
-eval "$(starship init zsh)"
-
+if command -v starship >/dev/null; then
+  eval "$(starship init zsh)"
+fi
 
 # --- Zsh options ---
 setopt autocd # Change directories by typing their name
@@ -43,47 +47,18 @@ bindkey '^[[H' beginning-of-line
 bindkey '^[[F' end-of-line
 bindkey '^[[3~' delete-char
 
-# --- Shared config sourcing ---
-XDG_SHELL="$HOME/.config/shell"
-[ -f "$XDG_SHELL/env" ] && source "$XDG_SHELL/env"
-[ -f "$XDG_SHELL/aliases" ] && source "$XDG_SHELL/aliases"
-[ -f "$XDG_SHELL/functions" ] && source "$XDG_SHELL/functions"
-
-
-# --- Environment improvements ---
-export EDITOR="nvim"
-export VISUAL="nvim"
-
 
 # Enable completion
 autoload -Uz compinit && compinit
 
 
-# Enhanced grep
-alias grep='grep --color=auto'
-
-
-# --- Vi mode indicator ---
-export VI_MODE_SET_CURSOR=true
-
-
-# --- Custom functions ---
-mkcd() {
-mkdir -p "$1" && cd "$1"
-}
-
-
-# Project root finder (example)
-projroot() {
-local root
-root=$(git rev-parse --show-toplevel 2>/dev/null)
-[ -n "$root" ] && cd "$root"
-}
-
-
-# Reload shell config
-alias reload='source ~/.zshrc'
-
 if command -v fastfetch > /dev/null; then
   fastfetch
+fi
+
+# bun completions
+[ -s "/home/wellcaffeinated/.bun/_bun" ] && source "/home/wellcaffeinated/.bun/_bun"
+
+if command -v zoxide >/dev/null; then
+  eval "$(zoxide init zsh)"
 fi
