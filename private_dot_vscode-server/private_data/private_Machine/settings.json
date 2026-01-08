@@ -1,3 +1,5 @@
 {
   "terminal.integrated.fontFamily": "'FiraCode Nerd Font Mono'",
+  "dev.containers.githubCLILoginWithToken": true,
+  "dotfiles.repository": "https://github.com/wellcaffeinated/dotfiles",
 }

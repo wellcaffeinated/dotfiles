@@ -16,6 +16,12 @@ elif [ -f "/usr/share/zsh-antidote/antidote.zsh" ]; then
 elif [ -f "/opt/homebrew/opt/antidote/share/antidote/antidote.zsh" ]; then
   source "/opt/homebrew/opt/antidote/share/antidote/antidote.zsh"
   antidote load < $HOME/.zsh_plugins.txt
+elif command -v git >/dev/null; then
+  echo "Installing antidote locally..."
+  # first, run this from an interactive zsh terminal session:
+  git clone --depth=1 https://github.com/mattmc3/antidote.git ${ZDOTDIR:-~}/.antidote
+  source ${ZDOTDIR:-~}/.antidote/antidote.zsh
+  antidote load < $HOME/.zsh_plugins.txt
 else
   echo "Antidote not found! Please install it."
 fi
