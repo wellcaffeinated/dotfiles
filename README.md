@@ -20,7 +20,8 @@ Note: `install.sh` is for devcontainer setup.
 │   ├── river/           # Window manager
 │   └── starship.toml    # Prompt
 ├── dot_zshrc
-└── dot_bashrc
+├── dot_bashrc
+└── dot_tmux.conf        # Tmux config
 ```
 
 ## Usage

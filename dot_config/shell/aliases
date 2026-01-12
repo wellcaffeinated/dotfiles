@@ -53,3 +53,11 @@ if [ -n "$ZSH_VERSION" ]; then
 elif [ -n "$BASH_VERSION" ]; then
   alias reload='source ~/.bashrc'
 fi
+
+# Tmux aliases
+if command -v tmux >/dev/null; then
+  alias txa='tmux attach -t'  # attach to session
+  alias txad='tmux attach -d -t'  # detach other clients and attach
+  alias txs='tmux new-session -s'  # new session
+  alias txl='tmux list-sessions'  # list sessions
+fi
