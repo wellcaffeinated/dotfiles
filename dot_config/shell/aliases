@@ -56,10 +56,8 @@ fi
 
 # Tmux aliases
 if command -v tmux >/dev/null; then
-  alias ta='tmux attach -t'  # attach to session
-  alias tad='tmux attach -d -t'  # detach other clients and attach
-  alias ts='tmux new-session -s'  # new session
-  alias tl='tmux list-sessions'  # list sessions
-  alias tksv='tmux kill-server'  # kill tmux server
-  alias tkss='tmux kill-session -t'  # kill session
+  alias txa='tmux attach -t'  # attach to session
+  alias txad='tmux attach -d -t'  # detach other clients and attach
+  alias txs='tmux new-session -s'  # new session
+  alias txl='tmux list-sessions'  # list sessions
 fi
