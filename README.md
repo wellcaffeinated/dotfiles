@@ -4,14 +4,10 @@ Personal configuration files managed with [chezmoi](https://chezmoi.io/).
 
 ## Installation
 
-```bash
-./install.sh
-```
-
-Or manually:
+See [chezmoi.io](https://chezmoi.io/) for installation.
 
 ```bash
-sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply wellcaffeinated/dotfiles
+chezmoi init --apply wellcaffeinated/dotfiles
 ```
 
 ## Structure
@@ -22,8 +18,7 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply wellcaffeinated/dotfiles
 │   ├── river/           # Window manager
 │   └── starship.toml    # Prompt
 ├── dot_zshrc
-├── dot_bashrc
-└── install.sh
+└── dot_bashrc
 ```
 
 ## Usage
