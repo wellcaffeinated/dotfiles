@@ -10,6 +10,8 @@ See [chezmoi.io](https://chezmoi.io/) for installation.
 chezmoi init --apply wellcaffeinated/dotfiles
 ```
 
+Note: `install.sh` is for devcontainer setup.
+
 ## Structure
 
 ```
