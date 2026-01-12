@@ -1,7 +1,10 @@
 # Shared aliases for bash and zsh
 
-alias vim='nvim'
-alias vi='nvim'
+# Editor aliases with fallback
+if command -v nvim >/dev/null; then
+  alias vim='nvim'
+  alias vi='nvim'
+fi
 
 # Feature-detected modern tools
 if command -v eza >/dev/null; then
@@ -11,6 +14,14 @@ if command -v eza >/dev/null; then
   alias llm='eza -lbGd --git --sort=modified'                            # long list, modified date sort
   alias la='eza -lbhHigUmuSa --time-style=long-iso --git --color-scale'  # all list
   alias lx='eza -lbhHigUmuSa@ --time-style=long-iso --git --color-scale' # all + extended list
+else
+  # Standard ls-based fallbacks
+  alias ls='ls --color=auto'                                             # ls with color
+  alias l='ls -lhF'                                                      # list, size, type
+  alias ll='ls -lhF'                                                     # long list
+  alias llm='ls -lhFt'                                                   # long list, modified date sort
+  alias la='ls -lAh'                                                     # all list
+  alias lx='ls -lAh'                                                     # all + extended list
 fi
 
 if command -v bat >/dev/null; then
