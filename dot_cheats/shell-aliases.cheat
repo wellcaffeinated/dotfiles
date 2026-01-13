@@ -39,12 +39,3 @@ txl
 
 # Reload shell config - reload
 reload
-
-# Safe remove with confirmation - rm -i
-echo rm -i is aliased
-
-# Safe copy with confirmation - cp -i
-echo cp -i is aliased
-
-# Safe move with confirmation - mv -i
-echo mv -i is aliased
