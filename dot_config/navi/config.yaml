@@ -1,0 +1,9 @@
+# Navi configuration
+# https://github.com/denisidoro/navi
+
+cheats:
+  paths:
+    # Default location for downloaded cheat repos (via `navi repo add`)
+    - ~/.local/share/navi/cheats/
+    # Personal cheats
+    - ~/.cheats/
