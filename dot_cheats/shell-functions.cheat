@@ -1,0 +1,7 @@
+% roastery, shell, functions
+
+# Make directory and cd into it - mkcd <dir>
+mkcd <dir>
+
+# Jump to git project root - projroot
+projroot

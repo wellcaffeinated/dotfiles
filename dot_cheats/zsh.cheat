@@ -1,0 +1,25 @@
+% roastery, zsh, keybindings
+
+# Search history up - Up Arrow
+echo Up Arrow - history substring search up
+
+# Search history down - Down Arrow
+echo Down Arrow - history substring search down
+
+# Go to beginning of line - Home
+echo Home key - beginning of line
+
+# Go to end of line - End
+echo End key - end of line
+
+# Delete character - Delete
+echo Delete key - delete char
+
+# Trigger navi cheatsheet - Ctrl-G
+echo Ctrl-G - navi widget
+
+# Zsh: auto cd by typing directory name
+echo Just type directory name to cd
+
+# Zsh: command correction suggestions
+echo Zsh will suggest corrections for typos
