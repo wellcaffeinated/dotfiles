@@ -1,4 +1,79 @@
 % roastery, tmux
 
-# Command input - Ctrl-Space
+# Prefix key - Ctrl-Space
 echo Ctrl-Space
+
+# Create new window - prefix c
+echo prefix c
+
+# Split pane horizontally (below) - prefix - or prefix "
+echo prefix - or prefix \"
+
+# Split pane vertically (right) - prefix | or prefix %
+echo prefix | or prefix %
+
+# Navigate to left pane - prefix h
+echo prefix h
+
+# Navigate to pane below - prefix j
+echo prefix j
+
+# Navigate to pane above - prefix k
+echo prefix k
+
+# Navigate to right pane - prefix l
+echo prefix l
+
+# Resize pane left - prefix H
+echo prefix H
+
+# Resize pane down - prefix J
+echo prefix J
+
+# Resize pane up - prefix K
+echo prefix K
+
+# Resize pane right - prefix L
+echo prefix L
+
+# Enter copy mode - prefix Enter
+echo prefix Enter
+
+# Begin selection in copy mode - v
+echo v
+
+# Copy selection in copy mode - y
+echo y
+
+# Toggle rectangle selection in copy mode - Ctrl-v
+echo Ctrl-v
+
+# Reload tmux config - prefix r
+echo prefix r
+
+# Kill current pane - prefix x
+echo prefix x
+
+# Next window - prefix n
+echo prefix n
+
+# Previous window - prefix p
+echo prefix p
+
+# Select window by number - prefix 0-9
+echo prefix 0-9
+
+# Detach from session - prefix d
+echo prefix d
+
+# List all keybindings - prefix ?
+echo prefix ?
+
+# Rename current window - prefix ,
+echo prefix ,
+
+# List windows - prefix w
+echo prefix w
+
+# Zoom/unzoom current pane - prefix z
+echo prefix z
