@@ -1,0 +1,28 @@
+# Navi configuration
+# https://github.com/denisidoro/navi
+
+cheats:
+  paths:
+    # Default location for downloaded cheat repos (via `navi repo add`)
+    - ~/.local/share/navi/cheats/
+    # Personal cheats
+    - ~/.cheats/
+
+# --- FZF finder customization ---
+# finder:
+#   command: fzf
+#   overrides: --height 40% --reverse --border
+#   overrides_var: --height 40% --reverse
+
+# --- Style customization ---
+# style:
+#   tag:
+#     color: cyan
+#     width_percentage: 20
+#     min_width: 10
+#   comment:
+#     color: white
+#     width_percentage: 40
+#     min_width: 20
+#   snippet:
+#     color: green
