@@ -68,3 +68,9 @@ fi
 if command -v zoxide >/dev/null; then
   eval "$(zoxide init zsh)"
 fi
+
+# --- Navi (cheatsheet tool) ---
+# Ctrl+G to trigger navi widget
+if command -v navi >/dev/null; then
+  eval "$(navi widget zsh)"
+fi
