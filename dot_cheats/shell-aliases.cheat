@@ -1,0 +1,41 @@
+% roastery, shell, aliases
+
+# List files with details and git status - l
+l
+
+# Long list with group directories - ll
+ll
+
+# Long list sorted by modified date - llm
+llm
+
+# List all files including hidden - la
+la
+
+# List all with extended attributes - lx
+lx
+
+# Go up one directory - ..
+cd ..
+
+# Go up two directories - ...
+cd ../..
+
+# Attach to tmux session - txa <session>
+txa <session>
+
+$ session: tmux list-sessions -F '#S' 2>/dev/null || echo "default"
+
+# Detach others and attach to tmux session - txad <session>
+txad <session>
+
+$ session: tmux list-sessions -F '#S' 2>/dev/null || echo "default"
+
+# Create new tmux session - txs <name>
+txs <name>
+
+# List tmux sessions - txl
+txl
+
+# Reload shell config - reload
+reload

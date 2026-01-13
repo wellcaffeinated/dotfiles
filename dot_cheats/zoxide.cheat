@@ -1,0 +1,19 @@
+% roastery, zoxide, navigation
+
+# Jump to frecent directory - z <query>
+z <query>
+
+# Jump interactively with fzf - zi
+zi
+
+# Add current directory to database - zoxide add .
+zoxide add .
+
+# Remove directory from database - zoxide remove <path>
+zoxide remove <path>
+
+# Query the database - zoxide query <query>
+zoxide query <query>
+
+# Show zoxide database entries - zoxide query -l
+zoxide query -l
