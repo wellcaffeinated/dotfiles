@@ -9,10 +9,10 @@ cheats:
     - ~/.cheats/
 
 # --- FZF finder customization ---
-# finder:
-#   command: fzf
-#   overrides: --height 40% --reverse --border
-#   overrides_var: --height 40% --reverse
+finder:
+  command: fzf
+  overrides: --height 40% --reverse --border
+  overrides_var: --height 40% --reverse
 
 # --- Style customization ---
 # style:
