@@ -8,6 +8,3 @@ export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 export EDITOR="nvim"
 export VISUAL="nvim"
 export LC_ALL="en_US.UTF-8"
-
-# --- Vi mode indicator ---
-export VI_MODE_SET_CURSOR=true

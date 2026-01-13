@@ -31,6 +31,9 @@ if command -v starship >/dev/null; then
   eval "$(starship init zsh)"
 fi
 
+# Use emacs keybindings (disable vi mode)
+bindkey -e
+
 # --- Zsh options ---
 setopt autocd # Change directories by typing their name
 setopt correct # Suggest corrections for mistyped commands
