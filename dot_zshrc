@@ -60,6 +60,11 @@ bindkey '^[[3~' delete-char
 # Enable completion
 autoload -Uz compinit && compinit
 
+# Enable completions for aliased commands
+if command -v eza >/dev/null; then
+  compdef la=eza l=eza ll=eza llm=eza lx=eza ls=eza
+fi
+
 
 if command -v fastfetch > /dev/null; then
   fastfetch
