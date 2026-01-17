@@ -1,0 +1,38 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/sh
+# Install tmux plugin manager (TPM)
+# This script runs when its content changes
+
+set -e
+
+TPM_DIR="$HOME/.tmux/plugins/tpm"
+
+# Check if TPM is already installed
+if [ -d "$TPM_DIR" ]; then
+    echo "TPM already installed at $TPM_DIR"
+    exit 0
+fi
+
+# Ensure git is installed
+if ! command -v git >/dev/null 2>&1; then
+    echo "Git not found, installing..."
+    {{ if lookPath "apt" -}}
+    sudo apt update && sudo apt install -y git
+    {{ else if lookPath "pacman" -}}
+    sudo pacman -Sy --noconfirm git
+    {{ else -}}
+    echo "Error: No supported package manager found (apt, pacman)"
+    exit 1
+    {{ end -}}
+fi
+
+# Create plugin directory
+mkdir -p "$HOME/.tmux/plugins"
+
+# Clone TPM
+echo "Installing TPM..."
+git clone https://github.com/tmux-plugins/tpm "$TPM_DIR"
+
+echo "TPM installed successfully!"
+echo "Press prefix + I (Ctrl-Space + I) inside tmux to install plugins."
+{{ end -}}
