@@ -54,11 +54,11 @@ echo prefix r
 # Kill current pane - prefix x
 echo prefix x
 
-# Next window - prefix n
-echo prefix n
+# Next window - prefix n or Ctrl-k
+echo prefix n or Ctrl-k
 
-# Previous window - prefix p
-echo prefix p
+# Previous window - prefix p or Ctrl-j
+echo prefix p or Ctrl-j
 
 # Select window by number - prefix 0-9
 echo prefix 0-9
