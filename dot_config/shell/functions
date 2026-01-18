@@ -17,6 +17,9 @@ tmux_session_prompt() {
   command -v tmux >/dev/null || return
   [ -n "$TMUX" ] && return
 
+  # Only prompt on SSH connections
+  [ -z "$SSH_TTY" ] && return
+
   # Check for existing sessions
   local sessions
   sessions=$(tmux list-sessions 2>/dev/null)
