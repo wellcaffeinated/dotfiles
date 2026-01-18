@@ -17,6 +17,10 @@ tmux_session_prompt() {
   command -v tmux >/dev/null || return
   [ -n "$TMUX" ] && return
 
+  # Skip in VSCode terminals and other embedded environments
+  [ "$TERM_PROGRAM" = "vscode" ] && return
+  [ -n "$VSCODE_INJECTION" ] && return
+
   # Check for existing sessions
   local sessions
   sessions=$(tmux list-sessions 2>/dev/null)
