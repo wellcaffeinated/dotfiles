@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -eu
 
-# statusline hash: {{ include "dot_claude/statusline-command.sh" | sha256sum }}
+# statusline hash: {{ include ".claude/statusline-command.sh" | sha256sum }}
 
 if [ -z "$CLAUDE_CONFIG_DIR" ]; then
   exit 0
