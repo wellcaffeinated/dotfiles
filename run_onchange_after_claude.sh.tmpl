@@ -7,7 +7,7 @@ if [ -z "$CLAUDE_CONFIG_DIR" ]; then
   exit 0
 fi
 
-SRC="{{ joinPath .chezmoi.sourceDir "dot_claude" }}"
+SRC="$HOME/.claude"
 
 # Create destination if needed
 mkdir -p "$CLAUDE_CONFIG_DIR"
