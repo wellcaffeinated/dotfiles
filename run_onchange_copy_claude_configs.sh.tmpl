@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -eu
+
+# dconf.ini hash: {{ include "dot_claude/statusline-command.sh" | sha256sum }}
+CLAUDE_CONFIG_DIR="{{ getenv "CLAUDE_CONFIG_DIR" }}"
+
+if [ -z "$CLAUDE_CONFIG_DIR" ]; then
+  exit 0
+fi
+
+SRC="{{ joinPath .chezmoi.sourceDir "dot_claude" }}"
+
+# Create destination if needed
+mkdir -p "$CLAUDE_CONFIG_DIR"
+
+# Copy contents (not the directory itself)
+cp -an "$SRC/." "$CLAUDE_CONFIG_DIR/"
+cp -a "$SRC/statusline-command.sh" "$CLAUDE_CONFIG_DIR/"
