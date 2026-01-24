@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 set -eu
 
-# dconf.ini hash: {{ include "dot_claude/statusline-command.sh" | sha256sum }}
-CLAUDE_CONFIG_DIR="{{ getenv "CLAUDE_CONFIG_DIR" }}"
+# statusline hash: {{ include "dot_claude/statusline-command.sh" | sha256sum }}
 
 if [ -z "$CLAUDE_CONFIG_DIR" ]; then
   exit 0
