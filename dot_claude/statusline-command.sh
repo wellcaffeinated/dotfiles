@@ -51,6 +51,18 @@ TEST_JSON='{
   }
 }'
 
+# Test usage data with reset times (for --test mode)
+TEST_USAGE='{
+  "five_hour": {
+    "utilization": 73,
+    "resets_at": "2026-02-03T22:00:00.210924+00:00"
+  },
+  "seven_day": {
+    "utilization": 87,
+    "resets_at": "2026-02-07T11:00:00.123456+00:00"
+  }
+}'
+
 # ============================================================================
 # Input handling
 # ============================================================================
@@ -215,6 +227,54 @@ context_color() {
     fi
 }
 
+# Format reset time for 5-hour limit (T-2h · 17:00)
+format_5h_reset() {
+    local reset_iso=$1
+    local now=$(date +%s)
+
+    # Convert ISO 8601 to Unix timestamp
+    local reset_timestamp=$(date -d "$reset_iso" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%S" "$(echo "$reset_iso" | cut -d. -f1)" +%s 2>/dev/null)
+
+    if [ -z "$reset_timestamp" ]; then
+        echo "error"
+        return
+    fi
+
+    local diff=$((reset_timestamp - now))
+
+    if [ "$diff" -lt 0 ]; then
+        echo "reset passed"
+        return
+    fi
+
+    # Calculate time until reset
+    local hours=$((diff / 3600))
+    local mins=$(( (diff % 3600) / 60 ))
+
+    local time_until
+    if [ "$hours" -gt 0 ]; then
+        time_until="T-${hours}h"
+    else
+        time_until="T-${mins}m"
+    fi
+
+    # Get reset time in HH:MM format (local time)
+    local reset_time=$(date -d "$reset_iso" +"%H:%M" 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%S" "$(echo "$reset_iso" | cut -d. -f1)" +"%H:%M" 2>/dev/null)
+
+    echo "${time_until} · ${reset_time}"
+}
+
+# Format reset time for 7-day limit (Sat 11:00)
+format_7d_reset() {
+    local reset_iso=$1
+
+    # Get day and time (local time)
+    local reset_day=$(date -d "$reset_iso" +"%a" 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%S" "$(echo "$reset_iso" | cut -d. -f1)" +"%a" 2>/dev/null)
+    local reset_time=$(date -d "$reset_iso" +"%H:%M" 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%S" "$(echo "$reset_iso" | cut -d. -f1)" +"%H:%M" 2>/dev/null)
+
+    echo "${reset_day} ${reset_time}"
+}
+
 # ============================================================================
 # Usage limits (via Anthropic OAuth API)
 # ============================================================================
@@ -303,7 +363,12 @@ five_hour_pct=""
 seven_day_bar=""
 seven_day_pct=""
 
-usage_data=$(get_usage 2>/dev/null)
+# Get usage data (use test data in test mode)
+if [ "$1" = "--test" ]; then
+    usage_data="$TEST_USAGE"
+else
+    usage_data=$(get_usage 2>/dev/null)
+fi
 
 if [ -n "$usage_data" ]; then
     # Parse utilization (this is USED percentage)
@@ -384,3 +449,53 @@ else
     printf "${COLOR_DIM}limits unavailable${RESET}"
 fi
 printf "\n"
+
+# --- Line 4 (conditional): Reset times if usage > 70% ---
+if [ -n "$usage_data" ]; then
+    # Parse reset timestamps
+    five_hour_resets_at=$(echo "$usage_data" | jq -r '.five_hour.resets_at // empty' 2>/dev/null)
+    seven_day_resets_at=$(echo "$usage_data" | jq -r '.seven_day.resets_at // empty' 2>/dev/null)
+
+    # Check which reset times to show
+    show_5h_reset=""
+    show_7d_reset=""
+
+    if [ -n "$five_hour_resets_at" ] && [ "$five_hour_resets_at" != "null" ] && [ "$five_hour_used_int" -gt 70 ]; then
+        show_5h_reset=$(format_5h_reset "$five_hour_resets_at")
+    fi
+
+    if [ -n "$seven_day_resets_at" ] && [ "$seven_day_resets_at" != "null" ] && [ "$seven_day_used_int" -gt 70 ]; then
+        show_7d_reset=$(format_7d_reset "$seven_day_resets_at")
+    fi
+
+    # Display reset times on a single line
+    if [ -n "$show_5h_reset" ] || [ -n "$show_7d_reset" ]; then
+        printf "%b" "$COLOR_DIM"
+
+        if [ -n "$show_5h_reset" ]; then
+            printf "   ╰─ %s" "$show_5h_reset"
+        fi
+
+        if [ -n "$show_7d_reset" ]; then
+            # Calculate spacing between 5h and 7d reset displays
+            if [ -n "$show_5h_reset" ]; then
+                # Both shown: calculate spacing from end of 5h display to 7d position
+                # 5h display: "   ╰─ T-3h · 17:00" = 3 + 2 + 1 + length of reset text
+                # Need to align 7d's ╰ with position 23
+                pct_len=3
+                if [ "$five_hour_used_int" -eq 100 ]; then
+                    pct_len=4
+                fi
+                seven_day_pos=$((3 + 3 + 10 + 1 + pct_len + 1 + 1 + 1))
+                five_h_display_len=$((3 + 2 + 1 + ${#show_5h_reset}))
+                spacing=$((seven_day_pos - five_h_display_len))
+                printf "%${spacing}s╰─ %s" "" "$show_7d_reset"
+            else
+                # Only 7d shown: align with "7d" at position 3
+                printf "   ╰─ %s" "$show_7d_reset"
+            fi
+        fi
+
+        printf "%b\n" "$RESET"
+    fi
+fi
