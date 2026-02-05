@@ -85,6 +85,7 @@ current_dir=$(echo "$input" | jq -r '.workspace.current_dir // "~"')
 project_dir=$(echo "$input" | jq -r '.workspace.project_dir // ""')
 context_size=$(echo "$input" | jq -r '.context_window.context_window_size // 200000')
 input_tokens=$(echo "$input" | jq -r '.context_window.total_input_tokens // 0')
+used_tokens_percent=$(echo "$input" | jq -r '.context_window.used_percentage // 0')
 output_tokens=$(echo "$input" | jq -r '.context_window.total_output_tokens // 0')
 
 # Ensure numeric values
@@ -347,7 +348,7 @@ get_usage() {
 # Format display values
 # ============================================================================
 
-context_display=$(format_number "$total_tokens")
+context_display=$(echo "${used_tokens_percent}%")
 context_max_display=$(format_number "$context_size")
 input_display=$(format_number "$input_tokens")
 output_display=$(format_number "$output_tokens")
@@ -430,7 +431,7 @@ printf "\n"
 printf "%b  " "$BOX_MID"
 printf "${COLOR_PURPLE}%s${RESET}" "$model_name"
 printf " %b " "$SEP_DOT"
-printf "%b%s${RESET}${COLOR_DIM}/%s${RESET}" "$ctx_color" "$context_display" "$context_max_display"
+printf "%b%s${RESET}${COLOR_DIM} of %s${RESET}" "$ctx_color" "$context_display" "$context_max_display"
 printf " %b " "$SEP_DOT"
 printf "${COLOR_ORANGE}↑%s${RESET} ${COLOR_BLUE}↓%s${RESET}" "$input_display" "$output_display"
 printf "\n"
