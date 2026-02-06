@@ -492,8 +492,8 @@ if [ -n "$usage_data" ]; then
                 spacing=$((seven_day_pos - five_h_display_len))
                 printf "%${spacing}s╰─ %s" "" "$show_7d_reset"
             else
-                # Only 7d shown: align with "7d" at position 3
-                printf "   ╰─ %s" "$show_7d_reset"
+                # Only 7d shown: align with "7d" at position 23
+		printf "%23s╰─ %s" "" "$show_7d_reset"
             fi
         fi
 
