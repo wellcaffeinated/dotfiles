@@ -7,7 +7,7 @@ echo "  themeVariables:"
 echo "    primaryColor: '#fff'"
 echo "  layout: elk"
 echo "---"
-echo "graph TB"
+echo "graph LR"
 echo ""
 
 # Get all containers
