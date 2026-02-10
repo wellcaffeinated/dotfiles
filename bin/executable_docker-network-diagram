@@ -1,0 +1,86 @@
+#!/usr/bin/env bash
+
+echo "---"
+echo "config:"
+echo "  theme: base"
+echo "  themeVariables:"
+echo "    primaryColor: '#fff'"
+echo "  layout: elk"
+echo "---"
+echo "graph TB"
+echo ""
+
+# Get all containers
+all_containers=$(docker ps --format '{{.Names}}')
+
+# Find isolated/host mode containers
+echo "    %% Isolated/Host mode containers"
+isolated_containers=""
+
+while IFS= read -r container; do
+    cont_id=$(echo "$container" | sed 's/[^a-zA-Z0-9]/_/g')
+    networks_for_container=$(docker inspect "$container" | jq -r '.[].NetworkSettings.Networks | keys[]')
+    
+    # Check if only connected to host, none, or bridge (default/isolated)
+    if echo "$networks_for_container" | grep -qE '^(host|none)$'; then
+        mode=$(echo "$networks_for_container" | head -n1)
+        echo "    ${cont_id}[\"🐳 $container<br/><small>($mode)</small>\"]"
+        isolated_containers="$isolated_containers $cont_id"
+    elif [ -z "$(echo "$networks_for_container" | grep -v '^bridge$')" ]; then
+        # Only on default bridge
+        echo "    ${cont_id}[\"🐳 $container<br/><small>(isolated)</small>\"]"
+        isolated_containers="$isolated_containers $cont_id"
+    fi
+done <<< "$all_containers"
+
+# Define network nodes
+networks=$(docker network ls --format '{{.Name}}' | grep -v '^bridge$\|^host$\|^none$')
+
+echo ""
+echo "    %% Network nodes"
+for network in $networks; do
+    net_id=$(echo "$network" | sed 's/[^a-zA-Z0-9]/_/g')
+    driver=$(docker network inspect "$network" | jq -r '.[].Driver')
+    echo "    ${net_id}([\"📡 $network<br/><small>$driver</small>\"])"
+done
+
+echo ""
+echo "    %% Networked container nodes"
+
+# Get containers that are on custom networks
+while IFS= read -r container; do
+    cont_id=$(echo "$container" | sed 's/[^a-zA-Z0-9]/_/g')
+    networks_for_container=$(docker inspect "$container" | jq -r '.[].NetworkSettings.Networks | keys[]' | grep -v '^bridge$\|^host$\|^none$')
+    
+    if [ -n "$networks_for_container" ]; then
+        echo "    ${cont_id}[\"🐳 $container\"]"
+    fi
+done <<< "$all_containers"
+
+echo ""
+echo "    %% Connections"
+
+# Create connections from containers to their networks
+while IFS= read -r container; do
+    cont_id=$(echo "$container" | sed 's/[^a-zA-Z0-9]/_/g')
+    networks_for_container=$(docker inspect "$container" | jq -r '.[].NetworkSettings.Networks | keys[]' | grep -v '^bridge$\|^host$\|^none$')
+    
+    while IFS= read -r network; do
+        if [ -n "$network" ]; then
+            net_id=$(echo "$network" | sed 's/[^a-zA-Z0-9]/_/g')
+            ip=$(docker inspect "$container" | jq -r --arg net "$network" '.[].NetworkSettings.Networks[$net].IPAddress')
+            echo "    ${cont_id} -->|\"$ip\"| ${net_id}"
+        fi
+    done <<< "$networks_for_container"
+done <<< "$all_containers"
+
+echo ""
+echo "    %% Styling"
+echo "    classDef networkStyle fill:#e1f5ff,stroke:#01579b,stroke-width:2px"
+echo "    classDef containerStyle fill:#fff3e0,stroke:#e65100,stroke-width:2px"
+echo "    classDef isolatedStyle fill:#ffebee,stroke:#c62828,stroke-width:2px"
+echo "    class $(echo $networks | tr ' ' ',' | sed 's/[^a-zA-Z0-9,]/_/g') networkStyle"
+echo "    class $(echo $all_containers | tr ' ' ',' | sed 's/[^a-zA-Z0-9,]/_/g') containerStyle"
+if [ -n "$isolated_containers" ]; then
+    echo "    class $(echo $isolated_containers | tr ' ' ',' | sed 's/^,//') isolatedStyle"
+fi
