@@ -233,8 +233,8 @@ format_5h_reset() {
     local reset_iso=$1
     local now=$(date +%s)
 
-    # Convert ISO 8601 to Unix timestamp
-    local reset_timestamp=$(date -d "$reset_iso" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%S" "$(echo "$reset_iso" | cut -d. -f1)" +%s 2>/dev/null)
+    # Convert ISO 8601 to Unix timestamp (treating input as UTC)
+    local reset_timestamp=$(date -d "$reset_iso" +%s 2>/dev/null || TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$(echo "$reset_iso" | cut -d. -f1)" +%s 2>/dev/null)
 
     if [ -z "$reset_timestamp" ]; then
         echo "error"
@@ -259,8 +259,8 @@ format_5h_reset() {
         time_until="T-${mins}m"
     fi
 
-    # Get reset time in HH:MM format (local time)
-    local reset_time=$(date -d "$reset_iso" +"%H:%M" 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%S" "$(echo "$reset_iso" | cut -d. -f1)" +"%H:%M" 2>/dev/null)
+    # Get reset time in HH:MM format (converted from UTC to local time)
+    local reset_time=$(date -d "$reset_iso" +"%H:%M" 2>/dev/null || TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$(echo "$reset_iso" | cut -d. -f1)" +"%H:%M" 2>/dev/null)
 
     echo "${time_until} · ${reset_time}"
 }
@@ -269,9 +269,9 @@ format_5h_reset() {
 format_7d_reset() {
     local reset_iso=$1
 
-    # Get day and time (local time)
-    local reset_day=$(date -d "$reset_iso" +"%a" 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%S" "$(echo "$reset_iso" | cut -d. -f1)" +"%a" 2>/dev/null)
-    local reset_time=$(date -d "$reset_iso" +"%H:%M" 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%S" "$(echo "$reset_iso" | cut -d. -f1)" +"%H:%M" 2>/dev/null)
+    # Get day and time (converted from UTC to local time)
+    local reset_day=$(date -d "$reset_iso" +"%a" 2>/dev/null || TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$(echo "$reset_iso" | cut -d. -f1)" +"%a" 2>/dev/null)
+    local reset_time=$(date -d "$reset_iso" +"%H:%M" 2>/dev/null || TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$(echo "$reset_iso" | cut -d. -f1)" +"%H:%M" 2>/dev/null)
 
     echo "${reset_day} ${reset_time}"
 }
