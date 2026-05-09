@@ -3,6 +3,7 @@ format = """
 [](color_orange)\
 $os\
 $username\
+$hostname\
 [](bg:color_yellow fg:color_orange)\
 $directory\
 [](fg:color_yellow bg:color_aqua)\
@@ -27,7 +28,7 @@ $pixi\
 $time\
 [ ](fg:color_bg1)\
 $status\
-$line_break$character"""
+$line_break${custom.ssh}$character"""
 
 palette = 'gruvbox_dark'
 
@@ -181,10 +182,16 @@ vimcmd_replace_symbol = '[](bold fg:color_purple)'
 vimcmd_visual_symbol = '[](bold fg:color_yellow)'
 
 [hostname]
-ssh_only = false
-style = "bg:#63251f"
-format = '[ @$hostname ]($style)'
+ssh_only = true
+style = "bg:color_orange fg:color_fg0"
+format = '[@$hostname ]($style)'
 disabled = false
+
+[custom.ssh]
+  when = '[ -n "$SSH_TTY" ] || [ -n "$SSH_CONNECTION" ]'
+  symbol = "SSH"
+  style = "fg:color_red bold"
+  format = "[$symbol ]($style)"
 
 [status]
 disabled = false
