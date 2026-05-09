@@ -83,6 +83,13 @@ if command -v navi >/dev/null; then
   eval "$(navi widget zsh)"
 fi
 
+# --- Terminal title hook (iTerm on macOS only) ---
+# Function defined in ~/.config/shell/functions
+if [ "$(uname)" = "Darwin" ] && [ -d "/Applications/iTerm.app" ]; then
+  autoload -Uz add-zsh-hook
+  add-zsh-hook precmd term_title_pwd
+fi
+
 # --- Tmux session restore prompt ---
 # Function defined in ~/.config/shell/functions
 tmux_session_prompt

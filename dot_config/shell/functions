@@ -10,6 +10,19 @@ projroot() {
   [ -n "$root" ] && cd "$root"
 }
 
+# Set terminal tab/window title via xterm escape sequence (works in iTerm,
+# Terminal.app, most Linux terminal emulators).
+term_title() {
+  printf '\e]1;%s\a' "$1"
+}
+
+# Set terminal title to current path, abbreviated (e.g. ~/c/g/dotfiles).
+term_title_pwd() {
+  local p="${PWD/#$HOME/~}"
+  p=$(printf '%s' "$p" | sed -E 's|([^/])[^/]*/|\1/|g')
+  term_title "$p"
+}
+
 # Prompt to restore existing tmux session on shell login
 tmux_session_prompt() {
   # Skip if tmux not available, already in tmux, or non-interactive

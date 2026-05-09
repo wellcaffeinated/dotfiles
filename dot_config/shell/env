@@ -8,3 +8,31 @@ export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 export EDITOR="nvim"
 export VISUAL="nvim"
 export LC_ALL="en_US.UTF-8"
+
+# cargo
+[ -s "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
+
+# volta
+export VOLTA_HOME="$HOME/.volta"
+[ -d "$VOLTA_HOME/bin" ] && export PATH="$VOLTA_HOME/bin:$PATH"
+
+# pnpm (macOS path; Linux installer uses ~/.local/share/pnpm)
+if [ -d "$HOME/Library/pnpm" ]; then
+  export PNPM_HOME="$HOME/Library/pnpm"
+elif [ -d "$HOME/.local/share/pnpm" ]; then
+  export PNPM_HOME="$HOME/.local/share/pnpm"
+fi
+[ -n "$PNPM_HOME" ] && export PATH="$PNPM_HOME:$PATH"
+
+# deno
+[ -d "$HOME/.deno/bin" ] && export PATH="$HOME/.deno/bin:$PATH"
+
+# pyenv (PATH only — run `eval "$(pyenv init -)"` ad-hoc when shims are needed)
+[ -d "$HOME/.pyenv/bin" ] && export PATH="$HOME/.pyenv/bin:$PATH"
+
+# macOS-specific
+if [ "$(uname)" = "Darwin" ]; then
+  # Obsidian CLI
+  [ -d "/Applications/Obsidian.app/Contents/MacOS" ] && \
+    export PATH="$PATH:/Applications/Obsidian.app/Contents/MacOS"
+fi
