@@ -27,7 +27,7 @@ term_title_pwd() {
 cld() {
   command -v tmux >/dev/null || { echo "tmux not found" >&2; return 1; }
   local name="cld-${1:-$(date +%H%M%S)}"
-  tmux new-session -d -s "$name" "claude"
+  tmux new-session -d -s "$name" "claude --remote-control"
   tmux attach -t "$name"
 }
 
