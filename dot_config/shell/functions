@@ -23,6 +23,14 @@ term_title_pwd() {
   term_title "$p"
 }
 
+# Open Claude in a named tmux session. Usage: cc [session-name]
+cc() {
+  command -v tmux >/dev/null || { echo "tmux not found" >&2; return 1; }
+  local name="cc-${1:-$(date +%H%M%S)}"
+  tmux new-session -d -s "$name" "claude"
+  tmux attach -t "$name"
+}
+
 # Prompt to restore existing tmux session on shell login
 tmux_session_prompt() {
   # Skip if tmux not available, already in tmux, or non-interactive
