@@ -23,10 +23,10 @@ term_title_pwd() {
   term_title "$p"
 }
 
-# Open Claude in a named tmux session. Usage: cc [session-name]
-cc() {
+# Open Claude in a named tmux session. Usage: cld [session-name]
+cld() {
   command -v tmux >/dev/null || { echo "tmux not found" >&2; return 1; }
-  local name="cc-${1:-$(date +%H%M%S)}"
+  local name="cld-${1:-$(date +%H%M%S)}"
   tmux new-session -d -s "$name" "claude"
   tmux attach -t "$name"
 }
