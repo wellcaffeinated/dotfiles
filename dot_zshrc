@@ -78,10 +78,11 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
 # Enable completions for ls-like aliases
-# Always set up ls as the base; prefer eza if available and its completion is loaded
-compdef la=ls l=ls ll=ls llm=ls lx=ls
-if command -v eza >/dev/null && (( $+functions[_eza] )); then
+# Check fpath for _eza (more reliable than $functions which may not include autoloaded completions)
+if command -v eza >/dev/null && [[ -n ${^fpath}/_eza(#qN) ]]; then
   compdef la=eza l=eza ll=eza llm=eza lx=eza ls=eza
+else
+  compdef la=ls l=ls ll=ls llm=ls lx=ls
 fi
 
 
