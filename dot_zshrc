@@ -57,11 +57,30 @@ bindkey '^[[F' end-of-line
 bindkey '^[[3~' delete-char
 
 
-# Enable completion
-autoload -Uz compinit && compinit
+# Enable completion with daily cache refresh
+autoload -Uz compinit
+() {
+  local dump="${ZDOTDIR:-$HOME}/.zcompdump"
+  if [[ -n ${dump}(#qNmh+24) ]]; then
+    compinit
+  else
+    compinit -C
+  fi
+}
 
-# Enable completions for aliased commands
-if command -v eza >/dev/null; then
+# Completion matching: case-insensitive, then partial-word, then substring
+zstyle ':completion:*' matcher-list \
+  'm:{a-z}={A-Z}' \
+  'm:{a-zA-Z}={A-Za-z}' \
+  'r:|[._-]=* r:|=*' \
+  'l:|=* r:|=*'
+zstyle ':completion:*' menu select
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+
+# Enable completions for ls-like aliases
+# Always set up ls as the base; prefer eza if available and its completion is loaded
+compdef la=ls l=ls ll=ls llm=ls lx=ls
+if command -v eza >/dev/null && (( $+functions[_eza] )); then
   compdef la=eza l=eza ll=eza llm=eza lx=eza ls=eza
 fi
 
