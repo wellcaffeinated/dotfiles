@@ -1,9 +1,18 @@
 {
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
   "permissions": {
     "allow": [],
     "deny": [
-      "Read(./.env)",
-      "Read(./secrets)"
+      "Read(**/.env)",
+      "Read(**/.ssh/**)",
+      "Read(**/.aws/**)",
+      "Read(./secrets/**)"
+    ],
+    "ask": [
+      "Bash(git push *)"
     ]
   },
   "statusLine": {
@@ -41,5 +50,6 @@
   "sandbox": {
     "enabled": true
   },
-  "effortLevel": "high"
+  "effortLevel": "high",
+  "tui": "fullscreen"
 }
