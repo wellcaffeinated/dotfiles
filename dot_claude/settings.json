@@ -23,8 +23,8 @@
     "obsidian@obsidian-skills": true,
     "superpowers@claude-plugins-official": false,
     "context7@claude-plugins-official": true,
-    "well-cafe-notebook@well-cafe-skills": true,
-    "warp@claude-code-warp": true
+    "warp@claude-code-warp": true,
+    "notebook@well-cafe-skills": true
   },
   "extraKnownMarketplaces": {
     "obsidian-skills": {
