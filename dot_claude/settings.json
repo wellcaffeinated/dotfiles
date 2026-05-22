@@ -6,10 +6,13 @@
   "permissions": {
     "allow": [],
     "deny": [
-      "Read(**/.env)",
-      "Read(**/.ssh/**)",
-      "Read(**/.aws/**)",
-      "Read(./secrets/**)"
+      "Read(//**/.env)",
+      "Read(//**/.env.*)",
+      "Read(//**/.ssh/**)",
+      "Read(//**/.aws/**)",
+      "Read(//**/secrets/**)",
+      "Read(//**/.credentials.json)",
+      "Read(//**/.git-credentials)"
     ],
     "ask": [
       "Bash(git push *)"
@@ -58,5 +61,6 @@
     "enabled": true
   },
   "effortLevel": "high",
-  "tui": "fullscreen"
+  "tui": "fullscreen",
+  "skipAutoPermissionPrompt": true
 }
