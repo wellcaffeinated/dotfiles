@@ -36,3 +36,8 @@ if [ "$(uname)" = "Darwin" ]; then
   [ -d "/Applications/Obsidian.app/Contents/MacOS" ] && \
     export PATH="$PATH:/Applications/Obsidian.app/Contents/MacOS"
 fi
+
+if [ -f "$HOME/.secrets" ]; then
+  source "$HOME/.secrets"
+fi
+
