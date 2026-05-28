@@ -41,6 +41,9 @@ tmux_session_prompt() {
   # Only prompt on SSH connections
   [ -z "$SSH_TTY" ] && return
 
+  # Don't prompt in zed term
+  [ -n "$ZED_TERM" ] && return
+
   # Check for existing sessions
   local sessions
   sessions=$(tmux list-sessions 2>/dev/null)
