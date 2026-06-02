@@ -4,10 +4,27 @@ mkcd() {
   mkdir -p "$1" && cd "$1"
 }
 
-projroot() {
+proj_root() {
   local root
-  root=$(git rev-parse --show-toplevel 2>/dev/null)
-  [ -n "$root" ] && cd "$root"
+  root=$(git rev-parse --show-toplevel 2>/dev/null || cwd)
+  echo $root
+}
+
+proj_root_sha() {
+  echo $(proj_root | shasum | cut -c1-8)
+}
+
+# open a tmux session for the current "project"
+txsess() {
+  local projname
+  projname=$(basename $(proj_root))
+  local session
+  session="$(proj_root_sha)-$projname"
+  if tmux has-session -t "$session" 2>/dev/null; then
+    tmux attach-session -t "$session"
+  else
+    tmux new-session -s "$session"
+  fi
 }
 
 # Set terminal tab/window title via xterm escape sequence (works in iTerm,
