@@ -38,12 +38,6 @@ alias ..='cd ..'
 alias ...='cd ../..'
 
 
-# Safety
-alias rm='rm -i'
-alias cp='cp -i'
-alias mv='mv -i'
-
-
 # Enhanced grep
 alias grep='grep --color=auto'
 

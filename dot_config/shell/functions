@@ -59,7 +59,10 @@ tmux_session_prompt() {
   [ -z "$SSH_TTY" ] && return
 
   # Don't prompt in zed term
-  [ -n "$ZED_TERM" ] && return
+  if [ -n "$ZED_TERM" ]; then
+    exec txsess
+    return
+  fi
 
   # Check for existing sessions
   local sessions
