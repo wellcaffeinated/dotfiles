@@ -63,7 +63,8 @@
   },
   "effortLevel": "high",
   "tui": "fullscreen",
-  "skipAutoPermissionPrompt": true,
+  "inputNeededNotifEnabled": true,
   "agentPushNotifEnabled": true,
-  "inputNeededNotifEnabled": true
+  "skipAutoPermissionPrompt": true,
+  "awaySummaryEnabled": false
 }
