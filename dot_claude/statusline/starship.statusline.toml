@@ -1,0 +1,98 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# ===========================================================================
+# Claude Code statusline — dedicated, self-contained Starship config.
+#
+# Wired up in ~/.claude/settings.json:
+#   "command": "STARSHIP_CONFIG=$HOME/.claude/statusline/starship.statusline.toml \
+#               starship statusline claude-code"
+#
+# It lives separately from ~/.config/starship.toml (the shell prompt) on purpose:
+# a Starship config has only one [directory]/[git_*], and a profile can override
+# only `format`, not a module's `style`. Keeping the statusline in its own file
+# lets line 1 use plain styling while the prompt keeps its powerline look.
+# Companion script: ~/.claude/statusline/claude-usage.sh (the 5h/7d usage line).
+# ===========================================================================
+
+palette = 'gruvbox_dark'
+
+[palettes.gruvbox_dark]
+color_fg0 = '#fbf1c7'
+color_dim = '#7c6f64'
+color_bg1 = '#3c3836'
+color_bg3 = '#665c54'
+color_blue = '#458588'
+color_blue_bright = '#83a598'
+color_aqua = '#689d6a'
+color_green = '#98971a'
+color_orange = '#d65d0e'
+color_purple = '#b16286'
+color_red = '#cc241d'
+color_yellow = '#d79921'
+
+# --- The statusline layout (only applies inside Claude Code) ---------------
+# Box decoration (dim grey #7c6f64): Starship draws the top/middle corners on
+# lines 1-2; claude-usage.sh draws the "╰─ " bottom corner on the usage line so
+# it can keep the reset times aligned under their gauges.
+[profiles]
+claude-code = """[╭─ ](fg:color_dim)$directory$git_branch$git_status
+[│  ](fg:color_dim)$claude_model$claude_context$claude_cost
+${custom.claude_usage}"""
+
+# --- Native Claude modules -------------------------------------------------
+[claude_model]
+format = '[$symbol$model](fg:color_purple)'
+symbol = ''
+# No model_aliases: $model falls back to Claude Code's display_name (e.g. "Opus 4.8").
+
+# " · 64% of 200k · ↑128.5k ↓8.2k" — percentage colored by usage, size dim,
+# up=input (orange), down=output (bright blue), dim "·" separators. No gauge
+# (that's the 5h/7d job).
+[claude_context]
+format = '[ · ](fg:color_dim)[$percentage]($style)[ of $total_tokens](fg:color_dim)[ · ](fg:color_dim)[↑$input_tokens](fg:color_orange) [↓$output_tokens](fg:color_blue)'
+symbol = ''
+
+[[claude_context.display]]
+threshold = 0
+style = 'fg:color_blue'
+[[claude_context.display]]
+threshold = 60
+style = 'fg:color_yellow'
+[[claude_context.display]]
+threshold = 80
+style = 'fg:color_red'
+
+# Lines of code changed this session: +added / -removed. No cost — subscription
+# users don't track API spend. Colors match the rest of the statusline: +added in
+# aqua (the low-usage gauge-segment color) and -removed in red (the same color_red
+# the context-percent and high-usage gauge use). The threshold-0 display block is
+# only here to keep the module visible (claude_cost hides itself under $1).
+[claude_cost]
+format = '[ · ](fg:color_dim)[+$lines_added](fg:color_aqua) [-$lines_removed](fg:color_red)'
+[[claude_cost.display]]
+threshold = 0.0
+style = 'fg:color_aqua'
+
+# --- Git (plain styling for the statusline; on merge, keep your own) --------
+[directory]
+format = '[$path](fg:color_aqua)'
+truncation_length = 3
+truncation_symbol = '…/'
+
+[git_branch]
+symbol = ' '
+format = '[ ─ ](fg:color_dim)[$symbol$branch](fg:color_green)'
+
+[git_status]
+format = '[( $all_status$ahead_behind)](fg:color_yellow)'
+
+# --- Custom subscription-usage module (the part Starship can't do natively) -
+# The command default points at the installed location; render-example.sh
+# overrides CLAUDE_USAGE_SCRIPT to test the local copy.
+[custom.claude_usage]
+command = '${CLAUDE_USAGE_SCRIPT:-$HOME/.claude/statusline/claude-usage.sh}'
+when = true
+shell = ['bash', '--noprofile', '--norc']
+format = '$output'        # script emits its own ANSI; don't let starship re-wrap it
+unsafe_no_escape = true   # let the script's raw ANSI (multi-color gauge) through
+ignore_timeout = true     # the script returns instantly; refresh is backgrounded

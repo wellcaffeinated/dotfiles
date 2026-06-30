@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-# statusline hash: {{ include "dot_claude/statusline-command.sh" | sha256sum }}
+# statusline hash: {{ include "dot_claude/statusline/starship.statusline.toml" | sha256sum }}{{ include "dot_claude/statusline/executable_claude-usage.sh" | sha256sum }}
 
 if [ -z "$CLAUDE_CONFIG_DIR" ]; then
   exit 0
@@ -14,5 +14,5 @@ mkdir -p "$CLAUDE_CONFIG_DIR"
 
 # Copy contents (not the directory itself)
 cp -an "$SRC/." "$CLAUDE_CONFIG_DIR/"
-cp -a "$SRC/statusline-command.sh" "$CLAUDE_CONFIG_DIR/"
+cp -a "$SRC/statusline" "$CLAUDE_CONFIG_DIR/"
 cp "$SRC/settings.json" "$CLAUDE_CONFIG_DIR/"
