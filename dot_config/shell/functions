@@ -55,6 +55,9 @@ tmux_session_prompt() {
   command -v tmux >/dev/null || return
   [ -n "$TMUX" ] && return
 
+  # No prompt for AI harness shell (like hermes)
+  [ -n "$AI_AGENT" ] && return
+
   # Only prompt on SSH connections
   [ -z "$SSH_TTY" ] && return
 

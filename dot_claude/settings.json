@@ -20,7 +20,7 @@
       "Bash(git push *)"
     ]
   },
-  "model": "opus",
+  "model": "opus[1m]",
   "statusLine": {
     "type": "command",
     "command": "STARSHIP_CONFIG=$HOME/.claude/statusline/starship.statusline.toml starship statusline claude-code"
