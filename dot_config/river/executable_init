@@ -153,6 +153,18 @@ riverctl rule-add -app-id "bar" csd
 # riverctl keyboard-layout us
 
 # ==============================================================================
+# OUTPUT CONFIGURATION
+# ==============================================================================
+
+# The panel is 3840x2160 at ~139 ppi, so scale 1 renders everything about
+# two-thirds of its intended physical size. River has no output-scale command;
+# wlr-randr is the tool for it.
+#
+# No trailing `&` -- this must finish before waybar starts below, or the bar
+# comes up sized for the old scale.
+wlr-randr --output HDMI-A-1 --scale 1.5
+
+# ==============================================================================
 # LAYOUT GENERATOR
 # ==============================================================================
 

@@ -67,6 +67,5 @@
   "awaySummaryEnabled": false,
   "tui": "fullscreen",
   "inputNeededNotifEnabled": true,
-  "agentPushNotifEnabled": true,
-  "skipAutoPermissionPrompt": true
+  "agentPushNotifEnabled": true
 }
